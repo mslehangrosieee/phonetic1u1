@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài Tập Tiếng Anh - Ms Lê Hằng English</title>
+    <style>
+        :root {
+            --teal-bg: #00B4A2;
+            --dark-teal: #007A6E;
+            --white-blue: #E8F6F5;
+            --correct-color: #00D26A;
+            --wrong-color: #FF4757;
+            --pastel-yellow: #FFF9E6;
+            --orange-border: #FF9F1A;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--teal-bg);
+            /* SVG Background với các họa tiết môi trường xanh trường học lơ lửng */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill='%23ffffff' fill-opacity='0.08'%3E%3Cpath d='M20 20C25 20 25 25 20 25C15 25 15 20 20 20Z' /%3E%3Cpath d='M80 80C85 80 85 85 80 85C75 85 75 80 80 80Z' /%3E%3Ccircle cx='50' cy='20' r='3' /%3E%3Cpath d='M10 70 Q 15 60, 20 70 T 30 70' stroke='%23fff' stroke-width='1.5' fill='none'/%3E%3Ccircle cx='85' cy='30' r='5' stroke='%23fff' stroke-width='1' fill='none'/%3E%3C/g%3E%3C/svg%3E");
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .teacher-title {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .alert-container {
+            background-color: #ffffff;
+            border: 3px dashed var(--orange-border);
+            border-radius: 12px;
+            max-width: 650px;
+            width: 100%;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .alert-title {
+            color: #d84315;
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        .alert-text {
+            color: #2c3e50;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 5px;
+        }
+
+        .main-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 24px;
+            max-width: 650px;
+            width: 100%;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .question-header {
+            background-color: var(--dark-teal);
+            color: #ffffff;
+            padding: 15px 20px;
+            border-radius: 14px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .word-list-line {
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+            margin-top: 8px;
+            font-size: 1.05rem;
+            letter-spacing: 0.5px;
+        }
+
+        .word-list-line u {
+            text-decoration: underline;
+            text-decoration-color: #FF4757;
+            text-decoration-thickness: 2px;
+            color: #fff;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .option-btn {
+            background-color: var(--white-blue);
+            color: #2c3e50;
+            border: 2px solid #cbd5e1;
+            padding: 14px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 14px;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.1s ease;
+            box-shadow: 0 5px 0 #b0bec5;
+            text-align: left;
+            display: flex;
+            align-items: center;
+        }
+
+        .option-btn:hover {
+            background-color: #def2f0;
+        }
+
+        .option-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 #b0bec5;
+        }
+
+        .option-btn.correct-choice {
+            background-color: var(--correct-color) !important;
+            color: white !important;
+            border-color: #00b359 !important;
+            box-shadow: 0 5px 0 #00803d !important;
+        }
+
+        .option-btn.wrong-choice {
+            background-color: var(--fail-color) !important;
+            color: white !important;
+            border-color: #e03d4b !important;
+            box-shadow: 0 5px 0 #b32d39 !important;
+        }
+
+        .option-btn u {
+            text-decoration: underline;
+            text-decoration-color: #FF4757;
+            text-decoration-thickness: 1.5px;
+        }
+
+        .explanation-card {
+            display: none;
+            background-color: #ffffff;
+            border-radius: 16px;
+            border-left: 8px solid var(--orange-border);
+            padding: 20px;
+            margin-top: 15px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.02);
+        }
+
+        .banner-instruction {
+            background-color: var(--pastel-yellow);
+            border: 1.5px dashed var(--orange-border);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            color: #d84315;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .exp-content {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #2c3e50;
+        }
+
+        .exp-content ul {
+            margin: 5px 0;
+            padding-left: 20px;
+        }
+
+        .en-word {
+            color: #1565c0;
+            font-weight: bold;
+        }
+
+        .ipa-box {
+            background-color: #f3e5f5;
+            color: #6a1b9a;
+            padding: 1px 6px;
+            border-radius: 5px;
+            font-family: 'Lucida Sans Unicode', sans-serif;
+            font-size: 0.9rem;
+            margin: 0 4px;
+            display: inline-block;
+        }
+
+        .vi-meaning {
+            color: #d84315;
+            font-weight: 500;
+        }
+
+        .reason-section {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed #e0e0e0;
+            font-weight: 500;
+        }
+
+        .summary-btn {
+            background-color: #ff9f1a;
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #cc7a00;
+            margin: 20px 0 50px 0;
+            transition: all 0.1s;
+        }
+
+        .summary-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #cc7a00;
+        }
+
+        /* Modal Popup */
+        .popup-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .popup-content {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .popup-content h2 {
+            color: var(--dark-teal);
+            margin-top: 0;
+        }
+
+        .popup-content p {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        .close-popup-btn {
+            background: var(--teal-bg);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h5 class="teacher-title">Giáo viên tạo: Ms Lê Hằng English</h5>
+
+    <div class="alert-container">
+        <div class="alert-title">⚠️ LỜI NHẮC CỰC KỲ QUAN TRỌNG ⚠️</div>
+        <div class="alert-text">Chỉ có đọc kỹ giải thích ngay sau mỗi câu, sau đó ghi lại từ vựng/cấu trúc mới vào vở để học thì mới thực sự giỏi lên.</div>
+        <div class="alert-text">Làm cho xong mà không đọc giải thích hay đọc qua loa không ghi chép thì chỉ tốn thời gian vô ích!</div>
+        <div class="alert-text" style="font-weight: bold; margin-top: 5px;">* Kéo tới đâu, làm tới đó! *</div>
+    </div>
+
+    <div id="quiz-holder" style="width: 100%; display: flex; flex-direction: column; align-items: center;"></div>
+
+    <button class="summary-btn" onclick="showTotalSummary()">Tổng kết kết quả</button>
+
+    <div class="popup-overlay" id="scorePopup">
+        <div class="popup-content">
+            <h2>Kết Quả Bài Thi 🎉</h2>
+            <p id="scoreText"></p>
+            <button class="close-popup-btn" onclick="closePopup()">Đóng</button>
+        </div>
+    </div>
+
+<script>
+    // Audio Context sinh âm thanh tự động tinh khiết không cần link ngoài
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    
+    function playSound(isCorrect) {
+        const osc = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        osc.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        if (isCorrect) {
+            // Tiếng Ding trong trẻo
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
+            osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); // E5
+            gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.25);
+        } else {
+            // Tiếng Téo tèo vui nhộn ngắn
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+            osc.frequency.setValueAtTime(110, audioCtx.currentTime + 0.12);
+            gainNode.gain.setValueAtTime(0.08, audioCtx.currentTime);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.25);
+        }
+    }
+
+    // Dữ liệu thô chính xác 100% từ đề bài
+    const database = [
+        // EXERCISE 1
+        {
+            type: "pronunciation",
+            displayLine: "<u>s</u>ubject | h<u>u</u>ngry | l<u>u</u>nch | calc<u>u</u>lator",
+            rawWords: ["A. subject", "B. hungry", "C. lunch", "D. calculator"],
+            keyWord: "D. calculator",
+            banner: "Chọn từ có phần gạch chân phát âm khác với các từ còn lại.",
+            expHTML: `1. Phân tích 4 đáp án:<br>
+            • <span class="en-word">subject</span> (n) <span class="ipa-box">/ˈsʌbdʒɪkt/</span>: <span class="vi-meaning">môn học</span>.<br>
+            • <span class="en-word">hungry</span> (adj) <span class="ipa-box">/ˈhʌŋɡri/</span>: <span class="vi-meaning">đói bụng</span>.<br>
+            • <span class="en-word">lunch</span> (n) <span class="ipa-box">/lʌntʃ/</span>: <span class="vi-meaning">bữa trưa</span>.<br>
+            • <span class="en-word">calculator</span> (n) <span class="ipa-box">/ˈkælkjuleɪtər/</span>: <span class="vi-meaning">máy tính bỏ túi</span>.<br>
+            <div class="reason-section">2. Tại sao chọn calculator?<br>Phần gạch chân ở calculator phát âm là /ə/, trong khi các từ còn lại phát âm là /ʌ/.</div>`
+        },
+        {
+            type: "pronunciation",
+            displayLine: "st<u>u</u>dy | comp<u>u</u>ter | und<u>u</u>rstand | s<u>u</u>nny",
+            rawWords: ["A. study", "B. computer", "C. understand", "D. sunny"],
+            keyWord: "B. computer",
+            banner: "Chọn từ có phần gạch chân phát âm khác với các từ còn lại.",
+            expHTML: `1. Phân tích 4 đáp án:<br>
+            • <span class="en-word">study</span> (v) <span class="ipa-box">/ˈstʌdi/</span>: <span class="vi-meaning">học tập</span>.<br>
+            • <span class="en-word">computer</span> (n) <span class="ipa-box">/kəmˈpjuːtər/</span>: <span class="vi-meaning">máy tính</span>.<br>
+            • <span class="en-word">understand</span> (v) <span class="ipa-box">/ˌʌndərˈstænd/</span>: <span class="vi-meaning">hiểu biết</span>.<br>
+            • <span class="en-word">sunny</span> (adj) <span class="ipa-box">/ˈsʌni/</span>: <span class="vi-meaning">có nắng</span>.<br>
+            <div class="reason-section">2. Tại sao chọn computer?<br>Phần gạch chân ở computer phát âm là /juː/, trong khi các từ còn lại phát âm là /ʌ/.</div>`
+        },
+        {
+            type: "pronunciation",
+            displayLine: "h<u>u</u>sband | st<u>u</u>dy | <u>u</u>ncle | t<u>u</u>rn",
+            rawWords: ["A. husband", "B. study", "C. uncle", "D. turn"],
+            keyWord: "D. turn",
+            banner: "Chọn từ có phần gạch chân phát âm khác với các từ còn lại.",
+            expHTML: `1. Phân tích 4 đáp án:<br>
+            • <span class="en-word">husband</span> (n) <span class="ipa-box">/ˈhʌzbənd/</span>: <span class="vi-meaning">người chồng</span>.<br>
+            • <span class="en-word">study</span> (v) <span class="ipa-box">/ˈstʌdi/</span>: <span class="vi-meaning">học tập</span>.<br>
+            • <span class="en-word">uncle</span> (n) <span class="ipa-box">/ˈʌŋkl/</span>: <span class="vi-meaning">chú, bác trai</span>.<br>
+            • <span class="en-word">turn</span> (v) <span class="ipa-box">/tɜːrn/</span>: <span class="vi-meaning">xoay, rẽ</span>.<br>
+            <div class="reason-section">2. Tại sao chọn turn?<br>Phần gạch chân ở turn phát âm là /ɜːrn/, trong khi các từ còn lại phát âm là /ʌ/.</div>`
+        },
+        {
+            type: "pronunciation",
+            displayLine: "l<u>a</u>rge | sh<u>a</u>rpener | h<u>a</u>t | st<u>a</u>r",
+            rawWords: ["A. large", "B. sharpener", "C. hat", "D. star"],
+            keyWord: "C. hat",
+            banner: "Chọn từ có phần gạch chân phát âm khác với các từ còn lại.",
+            expHTML: `1. Phân tích 4 đáp án:<br>
+            • <span class="en-word">large</span> (adj) <span class="ipa-box">/lɑːrdʒ/</span>: <span class="vi-meaning">rộng lớn</span>.<br>
+            • <span class="en-word">sharpener</span> (n) <span class="ipa-box">/ˈʃɑːrpnər/</span>: <span class="vi-meaning">gọt bút chì</span>.<br>
+            • <span class="en-word">hat</span> (n) <span class="ipa-box">/hæt/</span>: <span class="vi-meaning">cái mũ</span>.<br>
+            • <span class="en-word">star</span> (n) <span class="ipa-box">/stɑːr/</span>: <span class="vi-meaning">ngôi sao</span>.<br>
+            <div class="reason-section">2. Tại sao chọn hat?<br>Phần gạch chân ở hat phát âm là /æ/, trong khi các từ còn lại phát âm là /ɑː/.</div>`
+        },
+        {
+            type: "pronunciation",
+            displayLine: "cl<u>a</u>ssmate | comp<u>a</u>ss | sm<u>a</u>rt | f<u>a</u>st",
+            rawWords: ["A. classmate", "B. compass", "C. smart", "D. fast"],
+            keyWord: "B. compass",
+            banner: "Chọn từ có phần gạch chân phát âm khác với các từ còn lại.",
+            expHTML: `1. Phân tích 4 đáp án:<br>
+            • <span class="en-word">classmate</span> (n) <span class="ipa-box">/ˈklæsmeɪt/</span>: <span class="vi-meaning">bạn cùng lớp</span>.<br>
+            • <span class="en-word">compass</span> (n) <span class="ipa-box">/ˈkʌmpəs/</span>: <span class="vi-meaning">la bàn, com-pa</span>.<br>
+            • <span class="en-word">smart</span> (adj) <span class="ipa-box">/smɑːrt/</span>: <span class="vi-meaning">thông minh</span>.<br>
+            • <span class="en-word">fast</span> (adj/adv) <span class="ipa-box">/fæst/</span> hoặc <span class="ipa-box">/fɑːst/</span>: <span class="vi-meaning">nhanh chóng</span>.<br>
+            <div class="reason-section">2. Tại sao chọn compass?<br>Phần gạch chân ở compass phát âm là /vocal-ʌ/, trong khi các từ còn lại phát âm là /æ/ hoặc /ɑː/.</div>`
+        },
+        {
+            type: "pronunciation",
+            displayLine: "<u>u</u>niform | s<u>u</u>mmer | st<u>u</u>dent | comp<u>u</u>ter",
+            rawWords: ["A. uniform", "B. summer", "C. student", "D. computer"],
+            keyWord: "B. summer",
+            banner: "Chọn từ có phần gạch chân phát âm khác với các từ còn lại.",
+            expHTML: `1. Phân tích 4 đáp án:<br>
+            • <span class="en-word">uniform</span> (n) <span class="ipa-box">/ˈjuːnɪfɔːrm/</span>: <span class="vi-meaning">đồng phục</span>.<br>
+            • <span class="en-word">summer</span> (n) <span class="ipa-box">/ˈsʌmər/</span>: <span class="vi-meaning">mùa hè</span>.<br>
+            • <span class="en-word">student</span> (n) <span class="ipa-box">/ˈstuːdnt/</span>: <span class="vi-meaning">học sinh</span>.<br>
+            • <span class="en-word">computer</span> (n) <span class="ipa-box">/kəmˈpjuːtər/</span>: <span class="vi-meaning">máy tính</span>.<br>
+            <div class="reason-section">2. Tại sao chọn summer?<br>Phần gạch chân ở summer phát âm là /ʌ/, trong khi các từ còn lại phát âm là /juː/ hoặc /uː/.</div>`
+        },
+        {
+            type: "pronunciation",
+            displayLine: "c<u>ou</u>ntry | gr<u>ou</u>p | y<u>ou</u>ng | d<u>ou</u>ble",
+            rawWords: ["A. country", "B. group", "C. young", "D. double"],
+            keyWord: "B. group",
+            banner: "Chọn từ có phần gạch chân phát âm khác với các từ còn lại.",
+            expHTML: `1. Phân tích 4 đáp án:<br>
+            • <span class="en-word">country</span> (n) <span class="ipa-box">/ˈkʌntri/</span>: <span class="vi-meaning">đất nước</span>.<br>
+            • <span class="en-word">group</span> (n) <span class="ipa-box">/ɡruːp/</span>: <span class="vi-meaning">nhóm, đội</span>.<br>
+            • <span class="en-word">young</span> (adj) <span class="ipa-box">/jʌŋ/</span>: <span class="vi-meaning">trẻ tuổi</span>.<br>
+            • <span class="en-word">double</span> (adj/v) <span class="ipa-box">/ˈdʌbl/</span>: <span class="vi-meaning">gấp đôi</span>.<br>
+            <div class="reason-section">2. Tại sao chọn group?<br>Phần gạch chân ở group phát âm là /uː/, trong khi các từ còn lại phát âm là /ʌ/.</div>`
+        },
+        {
+            type: "pronunciation",
+            displayLine: "cl<u>a</u>ss | f<u>a</u>st | d<u>a</u>ncing | libr<u>a</u>ry",
+            rawWords: ["A. class", "B. fast", "C. dancing", "D. library"],
+            keyWord: "D. library",
+            banner: "Chọn từ có phần gạch chân phát âm khác với các từ còn lại.",
+            expHTML: `1. Phân tích 4 đáp án:<br>
+            • <span class="en-word">class</span> (n) <span class="ipa-box">/klæs/</span> hoặc <span class="ipa-box">/klɑːs/</span>: <span class="vi-meaning">lớp học</span>.<br>
+            • <span class="en-word">fast</span> (adj) <span class="ipa-box">/fæst/</span> hoặc <span class="ipa-box">/fɑːst/</span>: <span class="vi-meaning">nhanh</span>.<br>
+            • <span class="en-word">dancing</span> (v-ing/n) <span class="ipa-box">/ˈdænsɪŋ/</span> hoặc <span class="ipa-box">/ˈdɑːnsɪŋ/</span>: <span class="vi-meaning">nhảy múa</span>.<br>
+            • <span class="en-word">library</span> (n) <span class="ipa-box">/ˈlaɪbreri/</span>: <span class="vi-meaning">thư viện</span>.<br>
+            <div class="reason-section">2. Tại sao chọn library?<br>Phần gạch chân ở library phát âm là /ə/, trong khi các từ còn lại phát âm là /æ/ hoặc /ɑː/.</div>`
+        },
+        {
+            type: "pronunciation",
+            displayLine: "cl<u>e</u>ver | subj<u>e</u>ct | r<u>e</u>staurant | <u>E</u>nglish",
+            rawWords: ["A. clever", "B. subject", "C. restaurant", "D. English"],
+            keyWord: "D. English",
+            banner: "Chọn từ có phần gạch chân phát âm khác với các từ còn lại.",
+            expHTML: `1. Phân tích 4 đáp án:<br>
+            • <span class="en-word">clever</span> (adj) <span class="ipa-box">/ˈklevər/</span>: <span class="vi-meaning">khéo léo, thông minh</span>.<br>
+            • <span class="en-word">subject</span> (n) <span class="ipa-box">/ˈsʌbdʒɪkt/</span>: <span class="vi-meaning">môn học</span>.<br>
+            • <span class="en-word">restaurant</span> (n) <span class="ipa-box">/ˈrestrɑːnt/</span>: <span class="vi-meaning">nhà hàng</span>.<br>
+            • <span class="en-word">English</span> (n) <span class="ipa-box">/ˈɪŋɡlɪʃ/</span>: <span class="vi-meaning">Tiếng Anh</span>.<br>
+            <div class="reason-section">2. Tại sao chọn English?<br>Phần gạch chân ở English phát âm là /ɪ/, trong khi các từ còn lại phát âm là /e/.</div>`
+        },
+        {
+            type: "pronunciation",
+            displayLine: "c<u>a</u>lculator | c<u>a</u>r | f<u>a</u>st | f<u>a</u>ther",
+            rawWords: ["A. calculator", "B. car", "C. fast", "D. father"],
+            keyWord: "A. calculator",
+            banner: "Chọn từ có phần gạch chân phát âm khác với các từ còn lại.",
+            expHTML: `1. Phân tích 4 đáp án:<br>
+            • <span class="en-word">calculator</span> (n) <span class="ipa-box">/ˈkælkjuleɪtər/</span>: <span class="vi-meaning">máy tính bỏ túi</span>.<br>
+            • <span class="en-word">car</span> (n) <span class="ipa-box">/kɑːr/</span>: <span class="vi-meaning">xe ô tô</span>.<br>
+            • <span class="en-word">fast</span> (adj) <span class="ipa-box">/fɑːst/</span>: <span class="vi-meaning">nhanh chóng</span>.<br>
+            • <span class="en-word">father</span> (n) <span class="ipa-box">/ˈfɑːðər/</span>: <span class="vi-meaning">người cha</span>.<br>
+            <div class="reason-section">2. Tại sao chọn calculator?<br>Phần gạch chân ở calculator phát âm là /æ/, trong khi các từ còn lại phát âm là /ɑː/.</div>`
+        },
+        {
+            type: "pronunciation",
+            displayLine: "br<u>o</u>ther | v<u>o</u>lleyball | c<u>o</u>mpany | M<u>o</u>nday",
+            rawWords: ["A. brother", "B. volleyball", "C. company", "D. Monday"],
+            keyWord: "B. volleyball",
+            banner: "Chọn từ có phần gạch chân phát âm khác với các từ còn lại.",
+            expHTML: `1. Phân tích 4 đáp án:<br>
+            • <span class="en-word">brother</span> (n) <span class="ipa-box">/ˈbrʌðər/</span>: <span class="vi-meaning">anh em trai</span>.<br>
+            • <span class="en-word">volleyball</span> (n) <span class="ipa-box">/ˈvɑːlibɔːl/</span>: <span class="vi-meaning">môn bóng chuyền</span>.<br>
+            • <span class="en-word">company</span> (n) <span class="ipa-box">/ˈkʌmpəni/</span>: <span class="vi-meaning">công ty</span>.<br>
+            • <span class="en-word">Monday</span> (n) <span class="ipa-box">/ˈmʌndeɪ/</span>: <span class="vi-meaning">thứ Hai</span>.<br>
+            <div class="reason-section">2. Tại sao chọn volleyball?<br>Phần gạch chân ở volleyball phát âm là /ɑː/ hoặc /ɒ/, trong khi các từ còn lại phát âm là /ʌ/.</div>`
+        },
+        {
+            type: "pronunciation",
+            displayLine: "sm<u>a</u>rt | d<u>o</u>llar | st<u>a</u>rt | guit<u>a</u>r",
+            rawWords: ["A. smart", "B. dollar", "C. start", "D. guitar"],
+            keyWord: "B. dollar",
+            banner: "Chọn từ có phần gạch chân phát âm khác với các từ còn lại.",
+            expHTML: `1. Phân tích 4 đáp án:<br>
+            • <span class="en-word">smart</span> (adj) <span class="ipa-box">/smɑːrt/</span>: <span class="vi-meaning">thông minh</span>.<br>
+            • <span class="en-word">dollar</span> (n) <span class="ipa-box">/ˈdɑːlər/</span>: <span class="vi-meaning">đô-la</span>.<br>
+            • <span class="en-word">start</span> (v) <span class="ipa-box">/stɑːrt/</span>: <span class="vi-meaning">bắt đầu</span>.<br>
+            • <span class="en-word">guitar</span> (n) <span class="ipa-box">/ɡɪˈtɑːr/</span>: <span class="vi-meaning">đàn ghi-ta</span>.<br>
+            <div class="reason-section">2. Tại sao chọn dollar?<br>Phần gạch chân ở dollar phát âm là /ər/, trong khi các từ còn lại phát âm là /ɑːr/.</div>`
+        },
+        {
+            type: "pronunciation",
+            displayLine: "<u>u</u>niform | S<u>u</u>nday | m<u>u</u>sic | <u>u</u>nique",
+            rawWords: ["A. uniform", "B. Sunday", "C. music", "D. unique"],
+            keyWord: "B. Sunday",
+            banner: "Chọn từ có phần gạch chân phát âm khác với các từ còn lại.",
+            expHTML: `1. Phân tích 4 đáp án:<br>
+            • <span class="en-word">uniform</span> (n) <span class="ipa-box">/ˈjuːnɪfɔːrm/</span>: <span class="vi-meaning">đồng phục</span>.<br>
+            • <span class="en-word">Sunday</span> (n) <span class="ipa-box">/ˈsʌndeɪ/</span>: <span class="vi-meaning">Chủ nhật</span>.<br>
+            • <span class="en-word">music</span> (n) <span class="ipa-box">/ˈmjuːzɪk/</span>: <span class="vi-meaning">âm nhạc</span>.<br>
+            • <span class="en-word">unique</span> (adj) <span class="ipa-box">/juˈniːk/</span>: <span class="vi-meaning">độc nhất vô nhị</span>.<br>
+            <div class="reason-section">2. Tại sao chọn Sunday?<br>Phần gạch chân ở Sunday phát âm là /ʌ/, trong khi các từ còn lại phát âm là /juː/.</div>`
+        },
+        {
+            type: "pronunciation",
+            displayLine: "n<u>o</u>tebook | <u>o</u>ver | c<u>o</u>ver | vide<u>o</u>",
+            rawWords: ["A. notebook", "B. over", "C. cover", "D. video"],
+            keyWord: "C. cover",
+            banner: "Chọn từ có phần gạch chân phát âm khác với các từ còn lại.",
+            expHTML: `1. Phân tích 4 đáp án:<br>
+            • <span class="en-word">notebook</span> (n) <span class="ipa-box">/ˈnoʊtbʊk/</span>: <span class="vi-meaning">quyển vở</span>.<br>
+            • <span class="en-word">over</span> (adv/prep) <span class="ipa-box">/ˈoʊvər/</span>: <span class="vi-meaning">vượt qua</span>.<br>
+            • <span class="en-word">cover</span> (v/n) <span class="ipa-box">/ˈkʌvər/</span>: <span class="vi-meaning">che phủ, trang bìa</span>.<br>
+            • <span class="en-word">video</span> (n) <span class="ipa-box">/ˈvɪdioʊ/</span>: <span class="vi-meaning">đoạn phim</span>.<br>
+            <div class="reason-section">2. Tại sao chọn cover?<br>Phần gạch chân ở cover phát âm là /ʌ/, trong khi các từ còn lại phát âm là /oʊ/.</div>`
+        },
+        {
+            type: "pronunciation",
+            displayLine: "M<u>a</u>rch | sm<u>a</u>rt | w<u>a</u>rm | <u>a</u>rt",
+            rawWords: ["A. March", "B. smart", "C. warm", "D. art"],
+            keyWord: "C. warm",
+            banner: "Chọn từ có phần gạch chân phát âm khác với các từ còn lại.",
+            expHTML: `1. Phân tích 4 đáp án:<br>
+            • <span class="en-word">March</span> (n) <span class="ipa-box">/mɑːrt/</span>: <span class="vi-meaning">tháng Ba</span>.<br>
+            • <span class="en-word">smart</span> (adj) <span class="ipa-box">/smɑːrt/</span>: <span class="vi-meaning">thông minh</span>.<br>
+            • <span class="en-word">warm</span> (adj) <span class="ipa-box">/wɔːrm/</span>: <span class="vi-meaning">ấm áp</span>.<br>
+            • <span class="en-word">art</span> (n) <span class="ipa-box">/ɑːrt/</span>: <span class="vi-meaning">nghệ thuật</span>.<br>
+            <div class="reason-section">2. Tại sao chọn warm?<br>Phần gạch chân ở warm phát âm là /ɔːr/, trong khi các từ còn lại phát âm là /ɑːr/.</div>`
+        },
+        {
+            type: "pronunciation",
+            displayLine: "st<u>u</u>dy | l<u>u</u>nch | s<u>u</u>n | comp<u>u</u>ter",
+            rawWords: ["A. study", "B. lunch", "C. sun", "D. computer"],
+            keyWord: "D. computer",
+            banner: "Chọn từ có phần gạch chân phát âm khác với các từ còn lại.",
+            expHTML: `1. Phân tích 4 đáp án:<br>
+            • <span class="en-word">study</span> (v) <span class="ipa-box">/ˈstʌdi/</span>: <span class="vi-meaning">học tập</span>.<br>
+            • <span class="en-word">lunch</span> (n) <span class="ipa-box">/lʌntʃ/</span>: <span class="vi-meaning">bữa trưa</span>.<br>
+            • <span class="en-word">sun</span> (n) <span class="ipa-box">/sʌn/</span>: <span class="vi-meaning">mặt trời</span>.<br>
+            • <span class="en-word">computer</span> (n) <span class="ipa-box">/kəmˈpjuːtər/</span>: <span class="vi-meaning">máy tính</span>.<br>
+            <div class="reason-section">2. Tại sao chọn computer?<br>Phần gạch chân ở computer phát âm là /juː/, trong khi các từ còn lại phát âm là /ʌ/.</div>`
+        },
+        {
+            type: "pronunciation",
+            displayLine: "gr<u>a</u>mmar | st<u>a</u>r | h<u>a</u>rd | st<u>a</u>rt",
+            rawWords: ["A. grammar", "B. star", "C. hard", "D. start"],
+            keyWord: "A. grammar",
+            banner: "Chọn từ có phần gạch chân phát âm khác với các từ còn lại.",
+            expHTML: `1. Phân tích 4 đáp án:<br>
+            • <span class="en-word">grammar</span> (n) <span class="ipa-box">/ˈɡræmər/</span>: <span class="vi-meaning">ngữ pháp</span>.<br>
+            • <span class="en-word">star</span> (n) <span class="ipa-box">/stɑːr/</span>: <span class="vi-meaning">ngôi sao</span>.<br>
+            • <span class="en-word">hard</span> (adj) <span class="ipa-box">/hɑːrd/</span>: <span class="vi-meaning">chăm chỉ, vất vả</span>.<br>
+            • <span class="en-word">start</span> (v) <span class="ipa-box">/stɑːrt/</span>: <span class="vi-meaning">bắt đầu</span>.<br>
+            <div class="reason-section">2. Tại sao chọn grammar?<br>Phần gạch chân ở grammar phát âm là /æ/, trong khi các từ còn lại phát âm là /ɑː/.</div>`
+        },
+        {
+            type: "pronunciation",
+            displayLine: "c<u>o</u>me | s<u>o</u>meone | br<u>o</u>ther | v<u>o</u>lleyball",
+            rawWords: ["A. come", "B. someone", "C. brother", "D. volleyball"],
+            keyWord: "D. volleyball",
+            banner: "Chọn từ có phần gạch chân phát âm khác với các từ còn lại.",
+            expHTML: `1. Phân tích 4 đáp án:<br>
+            • <span class="en-word">come</span> (v) <span class="ipa-box">/kʌm/</span>: <span class="vi-meaning">đến, đi tới</span>.<br>
+            • <span class="en-word">someone</span> (pronoun) <span class="ipa-box">/ˈsʌmwʌn/</span>: <span class="vi-meaning">ai đó</span>.<br>
+            • <span class="en-word">brother</span> (n) <span class="ipa-box">/ˈbrʌðər/</span>: <span class="vi-meaning">anh em trai</span>.<br>
+            • <span class="en-word">volleyball</span> (n) <span class="ipa-box">/ˈvɑːlibɔːl/</span>: <span class="vi-meaning">bóng chuyền</span>.<br>
+            <div class="reason-section">2. Tại sao chọn volleyball?<br>Phần gạch chân ở volleyball phát âm là /ɑː/ hoặc /ɒ/, trong khi các từ còn lại phát âm là /ʌ/.</div>`
+        },
+        {
+            type: "pronunciation",
+            displayLine: "m<u>o</u>ther | n<u>o</u> | M<u>o</u>nday | l<u>o</u>ve",
+            rawWords: ["A. mother", "B. no", "C. Monday", "D. love"],
+            keyWord: "B. no",
+            banner: "Chọn từ có phần gạch chân phát âm khác với các từ còn lại.",
+            expHTML: `1. Phân tích 4 đáp án:<br>
+            • <span class="en-word">mother</span> (n) <span class="ipa-box">/ˈmʌðər/</span>: <span class="vi-meaning">mẹ</span>.<br>
+            • <span class="en-word">no</span> (adv) <span class="ipa-box">/noʊ/</span>: <span class="vi-meaning">không</span>.<br>
+            • <span class="en-word">Monday</span> (n) <span class="ipa-box">/ˈmʌndeɪ/</span>: <span class="vi-meaning">thứ Hai</span>.<br>
+            • <span class="en-word">love</span> (v/n) <span class="ipa-box">/lʌv/</span>: <span class="vi-meaning">yêu thương</span>.<br>
+            <div class="reason-section">2. Tại sao chọn no?<br>Phần gạch chân ở no phát âm là /oʊ/, trong khi các từ còn lại phát âm là /ʌ/.</div>`
+        },
+        {
+            type: "pronunciation",
+            displayLine: "s<u>u</u>bject | st<u>u</u>dy | f<u>u</u>n | comp<u>u</u>ter",
+            rawWords: ["A. subject", "B. study", "C. fun", "D. computer"],
+            keyWord: "D. computer",
+            banner: "Chọn từ có phần gạch chân phát âm khác với các từ còn lại.",
+            expHTML: `1. Phân tích 4 đáp án:<br>
+            • <span class="en-word">subject</span> (n) <span class="ipa-box">/ˈsʌbdʒɪkt/</span>: <span class="vi-meaning">môn học</span>.<br>
+            • <span class="en-word">study</span> (v) <span class="ipa-box">/ˈstʌdi/</span>: <span class="vi-meaning">học tập</span>.<br>
+            • <span class="en-word">fun</span> (n/adj) <span class="ipa-box">/fʌn/</span>: <span class="vi-meaning">vui vẻ</span>.<br>
+            • <span class="en-word">computer</span> (n) <span class="ipa-box">/kəmˈpjuːtər/</span>: <span class="vi-meaning">máy tính</span>.<br>
+            <div class="reason-section">2. Tại sao chọn computer?<br>Phần gạch chân ở computer phát âm là /juː/, trong khi các từ còn lại phát âm là /ʌ/.</div>`
+        },
+
+        // EXERCISE 2
+        {
+            type: "stress",
+            displayLine: "physics | lesson | judo | exciting",
+            rawWords: ["A. physics", "B. lesson", "C. judo", "D. exciting"],
+            keyWord: "D. exciting",
+            banner: "Chọn từ có trọng âm khác với các từ còn lại.",
+            expHTML: `1. Phân tích trọng âm các từ:<br>
+            • <span class="en-word">physics</span> (n) <span class="ipa-box">/ˈfɪzɪks/</span>: trọng âm rơi vào âm tiết thứ <span class="vi-meaning">1</span>.<br>
+            • <span class="en-word">lesson</span> (n) <span class="ipa-box">/ˈlesn/</span>: trọng âm rơi vào âm tiết thứ <span class="vi-meaning">1</span>.<br>
+            • <span class="en-word">judo</span> (n) <span class="ipa-box">/ˈdʒuːdoʊ/</span>: trọng âm rơi vào âm tiết thứ <span class="vi-meaning">1</span>.<br>
+            • <span class="en-word">exciting</span> (adj) <span class="ipa-box">/ɪkˈsaɪtɪŋ/</span>: trọng âm rơi vào âm tiết thứ <span class="vi-meaning">2</span>.<br>
+            <div class="reason-section">2. Tại sao chọn exciting?<br>exciting có vị trí trọng âm rơi vào âm tiết thứ 2, các từ còn lại đều có trọng âm rơi vào âm tiết thứ 1.</div>`
+        },
+        {
+            type: "stress",
+            displayLine: "creative | equipment | excited | uniform",
+            rawWords: ["A. creative", "B. equipment", "C. excited", "D. uniform"],
+            keyWord: "D. uniform",
+            banner: "Chọn từ có trọng âm khác với các từ còn lại.",
+            expHTML: `1. Phân tích trọng âm các từ:<br>
+            • <span class="en-word">creative</span> (adj) <span class="ipa-box">/kriˈeɪtɪv/</span>: trọng âm rơi vào âm tiết thứ <span class="vi-meaning">2</span>.<br>
+            • <span class="en-word">equipment</span> (n) <span class="ipa-box">/ɪˈkwɪpmənt/</span>: trọng âm rơi vào âm tiết thứ <span class="vi-meaning">2</span>.<br>
+            • <span class="en-word">excited</span> (adj) <span class="ipa-box">/ɪkˈsaɪtɪd/</span>: trọng âm rơi vào âm tiết thứ <span class="vi-meaning">2</span>.<br>
+            • <span class="en-word">uniform</span> (n) <span class="ipa-box">/ˈjuːnɪfɔːrm/</span>: trọng âm rơi vào âm tiết thứ <span class="vi-meaning">1</span>.<br>
+            <div class="reason-section">2. Tại sao chọn uniform?<br>uniform có trọng âm rơi vào âm tiết thứ 1, các từ còn lại đều rơi vào âm tiết thứ 2.</div>`
+        },
+        {
+            type: "stress",
+            displayLine: "international | kindergarten | interesting | calculator",
+            rawWords: ["A. international", "B. kindergarten", "C. interesting", "D. calculator"],
+            keyWord: "A. international",
+            banner: "Chọn từ có trọng âm khác với các từ còn lại.",
+            expHTML: `1. Phân tích trọng âm các từ:<br>
+            • <span class="en-word">international</span> (adj) <span class="ipa-box">/ˌɪntərˈnæʃnəl/</span>: trọng âm chính rơi vào âm tiết thứ <span class="vi-meaning">3</span>.<br>
+            • <span class="en-word">kindergarten</span> (n) <span class="ipa-box">/ˈkɪndərɡɑːrtn/</span>: trọng âm rơi vào âm tiết thứ <span class="vi-meaning">1</span>.<br>
+            • <span class="en-word">interesting</span> (adj) <span class="ipa-box">/ˈɪntrəstɪŋ/</span>: trọng âm rơi vào âm tiết thứ <span class="vi-meaning">1</span>.<br>
+            • <span class="en-word">calculator</span> (n) <span class="ipa-box">/ˈkælkjuleɪtər/</span>: trọng âm rơi vào âm tiết thứ <span class="vi-meaning">1</span>.<br>
+            <div class="reason-section">2. Tại sao chọn international?<br>international có trọng âm chính rơi vào âm tiết thứ 3, các từ còn lại rơi vào âm tiết thứ 1.</div>`
+        },
+        {
+            type: "stress",
+            displayLine: "boarding | textbook | around | history",
+            rawWords: ["A. boarding", "B. textbook", "C. around", "D. history"],
+            keyWord: "C. around",
+            banner: "Chọn từ có trọng âm khác với các từ còn lại.",
+            expHTML: `1. Phân tích trọng âm các từ:<br>
+            • <span class="en-word">boarding</span> (n) <span class="ipa-box">/ˈbɔːrdɪŋ/</span>: trọng âm rơi vào âm tiết thứ <span class="vi-meaning">1</span>.<br>
+            • <span class="en-word">textbook</span> (n) <span class="ipa-box">/ˈtekstbʊk/</span>: trọng âm rơi vào âm tiết thứ <span class="vi-meaning">1</span>.<br>
+            • <span class="en-word">around</span> (adv/prep) <span class="ipa-box">/əˈraʊnd/</span>: trọng âm rơi vào âm tiết thứ <span class="vi-meaning">2</span>.<br>
+            • <span class="en-word">history</span> (n) <span class="ipa-box">/ˈhɪstəri/</span>: trọng âm rơi vào âm tiết thứ <span class="vi-meaning">1</span>.<br>
+            <div class="reason-section">2. Tại sao chọn around?<br>around có trọng âm rơi vào âm tiết thứ 2, các từ còn lại đều có trọng âm rơi vào âm tiết thứ 1.</div>`
+        },
+        {
+            type: "stress",
+            displayLine: "sometimes | listen | canteen | pocket",
+            rawWords: ["A. sometimes", "B. listen", "C. canteen", "D. pocket"],
+            keyWord: "C. canteen",
+            banner: "Chọn từ có trọng âm khác với các từ còn lại.",
+            expHTML: `1. Phân tích trọng âm các từ:<br>
+            • <span class="en-word">sometimes</span> (adv) <span class="ipa-box">/ˈsʌmtaɪmz/</span>: trọng âm rơi vào âm tiết thứ <span class="vi-meaning">1</span>.<br>
+            • <span class="en-word">listen</span> (v) <span class="ipa-box">/ˈlɪsn/</span>: trọng âm rơi vào âm tiết thứ <span class="vi-meaning">1</span>.<br>
+            • <span class="en-word">canteen</span> (n) <span class="ipa-box">/kænˈtiːn/</span>: trọng âm rơi vào âm tiết thứ <span class="vi-meaning">2</span>.<br>
+            • <span class="en-word">pocket</span> (n) <span class="ipa-box">/ˈpɑːkɪt/</span>: trọng âm rơi vào âm tiết thứ <span class="vi-meaning">1</span>.<br>
+            <div class="reason-section">2. Tại sao chọn canteen?<br>canteen có trọng âm rơi vào âm tiết thứ 2, các từ còn lại rơi vào âm tiết thứ 1.</div>`
+        },
+        {
+            type: "stress",
+            displayLine: "interview | library | creative | badminton",
+            rawWords: ["A. interview", "B. library", "C. creative", "D. badminton"],
+            keyWord: "C. creative",
+            banner: "Chọn từ có trọng âm khác với các từ còn lại.",
+            expHTML: `1. Phân tích trọng âm các từ:<br>
+            • <span class="en-word">interview</span> (n/v) <span class="ipa-box">/ˈɪntərvjuː/</span>: trọng âm rơi vào âm tiết thứ <span class="vi-meaning">1</span>.<br>
+            • <span class="en-word">library</span> (n) <span class="ipa-box">/ˈlaɪbreri/</span>: trọng âm rơi vào âm tiết thứ <span class="vi-meaning">1</span>.<br>
+            • <span class="en-word">creative</span> (adj) <span class="ipa-box">/kriˈeɪtɪv/</span>: trọng âm rơi vào âm tiết thứ <span class="vi-meaning">2</span>.<br>
+            • <span class="en-word">badminton</span> (n) <span class="ipa-box">/ˈbædmɪntən/</span>: trọng âm rơi vào âm tiết thứ <span class="vi-meaning">1</span>.<br>
+            <div class="reason-section">2. Tại sao chọn creative?<br>creative có trọng âm rơi vào âm tiết thứ 2, các từ còn lại rơi vào âm tiết thứ 1.</div>`
+        },
+        {
+            type: "stress",
+            displayLine: "biology | breakfast | classroom | science",
+            rawWords: ["A. biology", "B. breakfast", "C. classroom", "D. science"],
+            keyWord: "A. biology",
+            banner: "Chọn từ có trọng âm khác với các từ còn lại.",
+            expHTML: `1. Phân tích trọng âm các từ:<br>
+            • <span class="en-word">biology</span> (n) <span class="ipa-box">/baɪˈɑːlədʒi/</span>: trọng âm rơi vào âm tiết thứ <span class="vi-meaning">2</span>.<br>
+            • <span class="en-word">breakfast</span> (n) <span class="ipa-box">/ˈbrekfəst/</span>: trọng âm rơi vào âm tiết thứ <span class="vi-meaning">1</span>.<br>
+            • <span class="en-word">classroom</span> (n) <span class="ipa-box">/ˈklæsruːm/</span>: trọng âm rơi vào âm tiết thứ <span class="vi-meaning">1</span>.<br>
+            • <span class="en-word">science</span> (n) <span class="ipa-box">/ˈsaɪəns/</span>: trọng âm rơi vào âm tiết thứ <span class="vi-meaning">1</span>.<br>
+            <div class="reason-section">2. Tại sao chọn biology?<br>biology có trọng âm rơi vào âm tiết thứ 2, các từ còn lại rơi vào âm tiết thứ 1.</div>`
+        },
+        {
+            type: "stress",
+            displayLine: "remember | uniform | secondary | exercise",
+            rawWords: ["A. remember", "B. uniform", "C. secondary", "D. exercise"],
+            keyWord: "A. remember",
+            banner: "Chọn từ có trọng âm khác với các từ còn lại.",
+            expHTML: `1. Phân tích trọng âm các từ:<br>
+            • <span class="en-word">remember</span> (v) <span class="ipa-box">/rɪˈmembər/</span>: trọng âm rơi vào âm tiết thứ <span class="vi-meaning">2</span>.<br>
+            • <span class="en-word">uniform</span> (n) <span class="ipa-box">/ˈjuːnɪfɔːrm/</span>: trọng âm rơi vào âm tiết thứ <span class="vi-meaning">1</span>.<br>
+            • <span class="en-word">secondary</span> (adj) <span class="ipa-box">/ˈsekənderi/</span>: trọng âm rơi vào âm tiết thứ <span class="vi-meaning">1</span>.<br>
+            • <span class="en-word">exercise</span> (n/v) <span class="ipa-box">/ˈeksərsaɪz/</span>: trọng âm rơi vào âm tiết thứ <span class="vi-meaning">1</span>.<br>
+            <div class="reason-section">2. Tại sao chọn remember?<br>remember có trọng âm rơi vào âm tiết thứ 2, các từ còn lại rơi vào âm tiết thứ 1.</div>`
+        },
+        {
+            type: "stress",
+            displayLine: "notebook | supply | boarding | pencil",
+            rawWords: ["A. notebook", "B. supply", "C. boarding", "D. pencil"],
+            keyWord: "B. supply",
+            banner: "Chọn từ có trọng âm khác với các từ còn lại.",
+            expHTML: `1. Phân tích trọng âm các từ:<br>
+            • <span class="en-word">notebook</span> (n) <span class="ipa-box">/ˈnoʊtbʊk/</span>: trọng âm rơi vào âm tiết thứ <span class="vi-meaning">1</span>.<br>
+            • <span class="en-word">supply</span> (n/v) <span class="ipa-box">/səˈplaɪ/</span>: trọng âm rơi vào âm tiết thứ <span class="vi-meaning">2</span>.<br>
+            • <span class="en-word">boarding</span> (n/adj) <span class="ipa-box">/ˈbɔːrdɪŋ/</span>: trọng âm rơi vào âm tiết thứ <span class="vi-meaning">1</span>.<br>
+            • <span class="en-word">pencil</span> (n) <span class="ipa-box">/ˈpensl/</span>: trọng âm rơi vào âm tiết thứ <span class="vi-meaning">1</span>.<br>
+            <div class="reason-section">2. Tại sao chọn supply?<br>supply có trọng âm rơi vào âm tiết thứ 2, các từ còn lại rơi vào âm tiết thứ 1.</div>`
+        },
+        {
+            type: "stress",
+            displayLine: "surround | swimming | compass | history",
+            rawWords: ["A. surround", "B. swimming", "C. compass", "D. history"],
+            keyWord: "A. surround",
+            banner: "Chọn từ có trọng âm khác với các từ còn lại.",
+            expHTML: `1. Phân tích trọng âm các từ:<br>
+            • <span class="en-word">surround</span> (v) <span class="ipa-box">/səˈraʊnd/</span>: trọng âm rơi vào âm tiết thứ <span class="vi-meaning">2</span>.<br>
+            • <span class="en-word">swimming</span> (n/v-ing) <span class="ipa-box">/ˈswɪmɪŋ/</span>: trọng âm rơi vào âm tiết thứ <span class="vi-meaning">1</span>.<br>
+            • <span class="en-word">compass</span> (n) <span class="ipa-box">/ˈkʌmpəs/</span>: trọng âm rơi vào âm tiết thứ <span class="vi-meaning">1</span>.<br>
+            • <span class="en-word">history</span> (n) <span class="ipa-box">/ˈhɪstəri/</span>: trọng âm rơi vào âm tiết thứ <span class="vi-meaning">1</span>.<br>
+            <div class="reason-section">2. Tại sao chọn surround?<br>surround có trọng âm rơi vào âm tiết thứ 2, các từ còn lại rơi vào âm tiết thứ 1.</div>`
+        }
+    ];
+
+    let totalCorrect = 0;
+
+    // Hàm trộn mảng ngẫu nhiên (Fisher-Yates Shuffle)
+    function shuffleArray(array) {
+        let temp = [...array];
+        for (let i = temp.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [temp[i], temp[j]] = [temp[j], temp[i]];
+        }
+        return temp;
+    }
+
+    // Khởi tạo render giao diện
+    function renderQuiz() {
+        const holder = document.getElementById('quiz-holder');
+        holder.innerHTML = "";
+
+        database.forEach((item, index) => {
+            // Xáo trộn 4 đáp án của mỗi câu hỏi riêng biệt mà không ảnh hưởng tới logic
+            const shuffledOptions = shuffleArray(item.rawWords);
+
+            const card = document.createElement('div');
+            card.className = "main-card";
+            card.id = `card-${index}`;
+
+            // Sinh tiêu đề câu hỏi
+            let headerHTML = `<div class="question-header">🌟 CÂU ${index + 1}:</div>`;
+            headerHTML += `<div class="word-list-line">${item.displayLine}</div>`;
+            card.innerHTML = headerHTML;
+
+            // Sinh lưới đáp án 2x2
+            const grid = document.createElement('div');
+            grid.className = "options-grid";
+
+            shuffledOptions.forEach(optText => {
+                const btn = document.createElement('button');
+                btn.className = "option-btn";
+                btn.innerHTML = optText;
+                
+                // Gán sự kiện click cho từng button
+                btn.onclick = function() {
+                    handleSelection(index, optText, item.keyWord, grid, btn);
+                };
+                grid.appendChild(btn);
+            });
+
+            card.appendChild(grid);
+
+            // Sinh khung giải thích chi tiết ẩn sẵn
+            const expDiv = document.createElement('div');
+            expDiv.className = "explanation-card";
+            expDiv.id = `explanation-${index}`;
+            expDiv.innerHTML = `
+                <div class="banner-instruction">${item.banner}</div>
+                <div class="exp-content">${item.expHTML}</div>
+            `;
+            card.appendChild(expDiv);
+
+            holder.appendChild(card);
+        });
+    }
+
+    // Xử lý sự kiện khi học sinh click chọn đáp án
+    function handleSelection(questionIdx, selectedText, correctText, gridElement, clickedButton) {
+        // Khóa tất cả các nút của câu này lại ngay lập tức
+        const buttons = gridElement.querySelectorAll('.option-btn');
+        buttons.forEach(b => {
+            b.style.pointerEvents = "none";
+        });
+
+        const isCorrect = (selectedText === correctText);
+
+        if (isCorrect) {
+            clickedButton.classList.add('correct-choice');
+            totalCorrect++;
+            playSound(true);
+        } else {
+            clickedButton.classList.add('wrong-choice');
+            // Tìm nút chứa đáp án đúng gốc để bôi xanh hỗ trợ ghi nhớ trực quan
+            buttons.forEach(b => {
+                if (b.innerHTML === correctText) {
+                    b.classList.add('correct-choice');
+                }
+            });
+            playSound(false);
+        }
+
+        // Hiện khung giải thích ngay tức thì
+        const targetExp = document.getElementById(`explanation-${questionIdx}`);
+        if (targetExp) {
+            targetExp.style.display = "block";
+        }
+    }
+
+    // Hiển thị popup tổng kết kết quả
+    function showTotalSummary() {
+        const popup = document.getElementById('scorePopup');
+        const scoreText = document.getElementById('scoreText');
+        
+        let comment = "Hãy đọc lại kỹ phần giải thích của những câu làm sai để ghi chép vào vở nhé!";
+        if (totalCorrect === database.length) {
+            comment = "Xuất sắc! Em có một tư duy ngữ âm cực kỳ tuyệt vời!";
+        } else if (totalCorrect >= database.length * 0.8) {
+            comment = "Rất tốt! Chăm chỉ ghi chép thêm các cấu trúc mới để đạt điểm tối đa nha!";
+        }
+
+        scoreText.innerHTML = `Em đã trả lời đúng <strong>${totalCorrect}/${database.length}</strong> câu.<br><br><small>${comment}</small>`;
+        popup.style.display = "flex";
+    }
+
+    function closePopup() {
+        document.getElementById('scorePopup').style.display = "none";
+    }
+
+    // Khởi chạy hệ thống khi tải trang
+    window.onload = function() {
+        renderQuiz();
+    };
+</script>
+</body>
+</html>
